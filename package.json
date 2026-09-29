@@ -1,0 +1,13 @@
+{
+  "name": "muhannadrafi-portfolio",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Static portfolio with browser regression tests",
+  "scripts": {
+    "check": "node --check assets/js/main.js",
+    "test": "npm run check && playwright test"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.58.0"
+  }
+}

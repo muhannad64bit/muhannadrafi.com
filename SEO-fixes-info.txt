@@ -1,0 +1,29 @@
+<!-- SEO tags for muhannadrafi.info -->
+<!-- Add to <head> -->
+
+<link rel="canonical" href="https://muhannadrafi.info/" />
+
+<meta property="og:title" content="Muhannad Rafi H. Alqarni - Professional Portfolio" />
+<meta property="og:description" content="Political Science Researcher & International Law Scholar. Connect, download CV, and explore my work." />
+<meta property="og:url" content="https://muhannadrafi.info/" />
+<meta property="og:type" content="website" />
+<meta property="og:image" content="https://muhannadrafi.info/assets/images/og-image.jpg" />
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Muhannad Rafi H. Alqarni - Professional Portfolio" />
+<meta name="twitter:description" content="Political Science Researcher & International Law Scholar." />
+
+<meta name="robots" content="index, follow" />
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "name": "Muhannad Rafi H. Alqarni",
+  "url": "https://muhannadrafi.info",
+  "sameAs": [
+    "https://www.linkedin.com/in/muhannadrafihalqarni/",
+    "https://x.com/muhannadRFI"
+  ]
+}
+</script>

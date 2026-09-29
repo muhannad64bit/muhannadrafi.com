@@ -1,0 +1,8 @@
+# robots.txt for muhannadrafi.info
+# Allow all crawlers to index the site
+
+User-agent: *
+Allow: /
+
+# Sitemap location
+Sitemap: https://muhannadrafi.info/sitemap.xml

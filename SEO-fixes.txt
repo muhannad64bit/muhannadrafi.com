@@ -1,0 +1,129 @@
+<!-- ============================================= -->
+<!-- SEO FIXES FOR muhannadrafi.com               -->
+<!-- Add these tags inside <head> in your index.html -->
+<!-- ============================================= -->
+
+<!-- 1. Canonical URL (prevents duplicate content issues) -->
+<link rel="canonical" href="https://muhannadrafi.com/" />
+
+<!-- 2. Open Graph (for Facebook, LinkedIn, Twitter sharing) -->
+<meta property="og:title" content="Muhannad Rafi H. Alqarni - Political Economy Specialist" />
+<meta property="og:description" content="Political Economy Specialist, International Relations Analyst, and Public Policy Advocate based in Jeddah, Saudi Arabia." />
+<meta property="og:url" content="https://muhannadrafi.com/" />
+<meta property="og:type" content="website" />
+<meta property="og:image" content="https://muhannadrafi.com/assets/images/og-image.jpg" />
+<meta property="og:locale" content="en_US" />
+<meta property="og:locale:alternate" content="ar_SA" />
+
+<!-- 3. Twitter Card -->
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Muhannad Rafi H. Alqarni - Political Economy Specialist" />
+<meta name="twitter:description" content="Political Economy Specialist, International Relations Analyst, and Public Policy Advocate." />
+<meta name="twitter:image" content="https://muhannadrafi.com/assets/images/og-image.jpg" />
+
+<!-- 4. Robots meta -->
+<meta name="robots" content="index, follow" />
+
+<!-- 5. Theme color (for mobile browsers) -->
+<meta name="theme-color" content="#1a1a2e" />
+
+<!-- 6. Hreflang (multilingual support) -->
+<link rel="alternate" hreflang="en" href="https://muhannadrafi.com/" />
+<link rel="alternate" hreflang="ar" href="https://muhannadrafi.com/" />
+<link rel="alternate" hreflang="x-default" href="https://muhannadrafi.com/" />
+
+<!-- 7. JSON-LD Structured Data (Person Schema) -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "name": "Muhannad Rafi H. Alqarni",
+  "url": "https://muhannadrafi.com",
+  "sameAs": [
+    "https://www.linkedin.com/in/muhannadrafihalqarni/",
+    "https://x.com/muhannadRFI"
+  ],
+  "jobTitle": "Political Economy Specialist",
+  "worksFor": {
+    "@type": "Organization",
+    "name": "Freelance"
+  },
+  "alumniOf": {
+    "@type": "CollegeOrUniversity",
+    "name": "King Abdulaziz University",
+    "department": "Political Science - International Political Economy"
+  },
+  "address": {
+    "@type": "PostalAddress",
+    "addressLocality": "Jeddah",
+    "addressCountry": "SA"
+  },
+  "knowsLanguage": ["Arabic", "English", "Russian"],
+  "email": "MuhannadRafi@mailfence.com"
+}
+</script>
+
+<!-- ============================================= -->
+<!-- IMPORTANT CONTENT FIXES NEEDED               -->
+<!-- ============================================= -->
+
+<!-- FIX 1: Location says "Riyadh" but should be "Jeddah" -->
+<!-- Find and replace: "Riyadh, Kingdom of Saudi Arabia" → "Jeddah, Kingdom of Saudi Arabia" -->
+
+<!-- FIX 2: Master's degree title is WRONG -->
+<!-- Website says: "Master of Laws in International Law" -->
+<!-- CV says: "Master's Degree in International Relations" at Dar Al-Hekma -->
+<!-- Replace with what's actually correct -->
+
+<!-- FIX 3: English level inconsistency -->
+<!-- Website skills section says: "English (Upper Intermediate) 75%"  -->
+<!-- CV says: "English (C1 Advanced)" -->
+<!-- But certificate from EC Cape Town says: B2 Upper-Intermediate -->
+<!-- RECOMMENDATION: Use "English (B2 Upper-Intermediate)" — matches certificate -->
+
+<!-- FIX 4: Publications claim -->
+<!-- Website says: "5 Publications" — are these real published articles in actual journals? -->
+<!-- If not verified, change to "Research Writing" or remove the count -->
+
+<!-- FIX 5: Books claim -->
+<!-- Website says: "2 Books (Coming Soon)" — are these actually being written? -->
+<!-- If not, this could damage credibility -->
+
+<!-- FIX 6: Skill percentages are inflated -->
+<!-- 95% Policy Development, 93% Research Methodology, etc. -->
+<!-- These are unverifiable and look unrealistic — consider removing percentages -->
+
+<!-- FIX 7: meta description mentions Riyadh -->
+<!-- Current: "...Riyadh, Saudi Arabia" -->
+<!-- Should be: "...Jeddah, Saudi Arabia" -->
+
+<!-- ============================================= -->
+<!-- FILES TO UPLOAD TO HOSTINGER                  -->
+<!-- ============================================= -->
+
+<!-- 1. robots.txt → Upload to root of muhannadrafi.com -->
+<!-- 2. sitemap.xml → Upload to root of muhannadrafi.com -->
+<!-- 3. robots.txt → Upload to root of muhannadrafi.info -->
+<!-- 4. sitemap.xml → Upload to root of muhannadrafi.info -->
+<!-- 5. OG image → Create a 1200x630px image and upload to /assets/images/og-image.jpg -->
+<!-- 6. Add all meta tags above to <head> of both sites -->
+<!-- 7. Add JSON-LD script to <head> of muhannadrafi.com -->
+
+<!-- ============================================= -->
+<!-- ADDITIONAL SEO RECOMMENDATIONS                -->
+<!-- ============================================= -->
+
+<!-- 8. Google Search Console — Submit and verify both domains -->
+<!--    https://search.google.com/search-console -->
+
+<!-- 9. Google Analytics or privacy-friendly alternative -->
+<!--    Add tracking to understand visitor behavior -->
+
+<!-- 10. Create a 1200x630px OG image for social sharing -->
+<!--     This image appears when your URL is shared on LinkedIn, Twitter, etc. -->
+
+<!-- 11. Add Privacy Policy page (muhannadrafi.info links to "#" which is empty) -->
+
+<!-- 12. Add Terms of Service page (same issue) -->
+
+<!-- 13. muhannadrafi.info — add OG image and canonical URL too -->

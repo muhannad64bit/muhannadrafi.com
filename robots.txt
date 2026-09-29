@@ -1,0 +1,12 @@
+# robots.txt for muhannadrafi.com
+# Allow all crawlers to index the site
+
+User-agent: *
+Allow: /
+
+# Sitemap location
+Sitemap: https://muhannadrafi.com/sitemap.xml
+
+# Disallow admin or private paths (add as needed)
+Disallow: /assets/
+Disallow: /download/

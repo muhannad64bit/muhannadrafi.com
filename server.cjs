@@ -72,44 +72,38 @@ const CSP = [
   "upgrade-insecure-requests",
 ].join('; ');
 
-const SECURITY_HEADERS = {
-  'Content-Security-Policy':           CSP,
-  'X-Content-Type-Options':            'nosniff',
-  'X-Frame-Options':                   'DENY',
-  'X-XSS-Protection':                  '1; mode=block',
-  'Referrer-Policy':                   'strict-origin-when-cross-origin',
-  'Permissions-Policy':                [
-    'camera=()',
-    'microphone=()',
-    'geolocation=()',
-    'payment=()',
-    'usb=()',
-    'interest-cohort=()',
-  ].join(', '),
-  'Strict-Transport-Security':         'max-age=63072000; includeSubDomains; preload',
-  'Cross-Origin-Opener-Policy':        'same-origin',
-  'Cross-Origin-Resource-Policy':      'same-origin',
-};
+// Flat list of [name, value] pairs — injected via serve-handler's headers config
+// and also applied manually for 404 / 429 / 500 responses.
+const SECURITY_PAIRS = [
+  ['Content-Security-Policy',     CSP],
+  ['X-Content-Type-Options',      'nosniff'],
+  ['X-Frame-Options',             'DENY'],
+  ['X-XSS-Protection',            '1; mode=block'],
+  ['Referrer-Policy',             'strict-origin-when-cross-origin'],
+  ['Permissions-Policy',          'camera=(), microphone=(), geolocation=(), payment=(), usb=(), interest-cohort=()'],
+  ['Strict-Transport-Security',   'max-age=63072000; includeSubDomains; preload'],
+  ['Cross-Origin-Opener-Policy',  'same-origin'],
+  ['Cross-Origin-Resource-Policy','same-origin'],
+];
 
-// Cache durations per asset type (in seconds).
-function cacheFor(urlPath) {
-  if (/\.(woff2?|ttf|otf|eot)$/i.test(urlPath))   return 'public, max-age=31536000, immutable'; // fonts: 1 yr
-  if (/\.(css|js)$/i.test(urlPath))                 return 'public, max-age=86400';               // css/js: 1 day
-  if (/\.(jpe?g|png|gif|svg|webp|avif|ico)$/i.test(urlPath)) return 'public, max-age=604800';    // images: 1 wk
-  if (/\.(pdf)$/i.test(urlPath))                    return 'public, max-age=3600';                // PDFs: 1 hr
-  return 'public, max-age=0, must-revalidate';                                                    // HTML: always revalidate
-}
+// serve-handler `headers` format: [{source, headers:[{key,value}]}]
+const SERVE_HEADERS = [{
+  source: '**/*',
+  headers: SECURITY_PAIRS.map(([key, value]) => ({ key, value })),
+}];
 
-function applySecurityHeaders(response, urlPath) {
-  for (const [key, value] of Object.entries(SECURITY_HEADERS)) {
+function addSecurityHeaders(response, extraHeaders = {}) {
+  for (const [key, value] of SECURITY_PAIRS) {
     response.setHeader(key, value);
   }
-  response.setHeader('Cache-Control', cacheFor(urlPath));
+  for (const [key, value] of Object.entries(extraHeaders)) {
+    response.setHeader(key, value);
+  }
 }
 
-// ── 404 helper ───────────────────────────────────────────────────────────────
-function send404(response, urlPath) {
-  applySecurityHeaders(response, urlPath);
+// ── 404 / error helpers ───────────────────────────────────────────────────────
+function send404(response) {
+  addSecurityHeaders(response, { 'Cache-Control': 'no-store' });
   if (page404) {
     response.writeHead(404, { 'Content-Type': 'text/html; charset=utf-8' });
     response.end(page404);
@@ -139,40 +133,59 @@ const server = http.createServer((request, response) => {
     return;
   }
 
-  // Apply security headers to every response.
-  applySecurityHeaders(response, request.url || '/');
+  // Strip query string / fragment for file-system lookup.
+  const rawPath = (request.url || '/').split('?')[0].split('#')[0];
 
-  // serve-handler resolves the file and streams it.  We intercept the 404
-  // case by checking whether the resolved file actually exists first.
-  const urlPath   = (request.url || '/').split('?')[0].split('#')[0];
-  const filePath  = path.join(publicDir, urlPath);
+  // Decode percent-encoding safely.
+  let decodedPath = rawPath;
+  try { decodedPath = decodeURIComponent(rawPath); } catch { /* leave as-is */ }
 
-  // Directory index: rewrite to index.html (serve-handler already does this,
-  // but we need to know whether to 404 before invoking it).
-  let resolvedPath = filePath;
-  try {
-    const stat = fs.statSync(filePath);
-    if (stat.isDirectory()) resolvedPath = path.join(filePath, 'index.html');
-  } catch {
-    // File doesn't exist — fall through to 404.
-  }
+  // Build the candidate filesystem path.
+  const filePath     = path.join(publicDir, decodedPath);
+  const normFilePath = path.normalize(filePath);
 
-  if (!fs.existsSync(resolvedPath) && !urlPath.endsWith('/')) {
-    // Nothing on disk for this URL → serve our custom 404.
-    send404(response, urlPath);
+  // ── Path traversal guard ───────────────────────────────────────────────────
+  // Reject anything that resolves outside publicDir.
+  if (normFilePath !== publicDir &&
+      !normFilePath.startsWith(publicDir + path.sep)) {
+    response.writeHead(400, { 'Content-Type': 'text/plain', 'Cache-Control': 'no-store' });
+    response.end('400 Bad Request');
     return;
   }
 
-  // Let serve-handler stream the file.
+  // ── File-existence check ───────────────────────────────────────────────────
+  // Determine whether there is anything to serve before handing off to
+  // serve-handler, so we can return our branded 404 page instead.
+  let fileExists = false;
+  try {
+    const stat = fs.statSync(normFilePath);
+    fileExists = stat.isDirectory()
+      ? fs.existsSync(path.join(normFilePath, 'index.html'))
+      : true;
+  } catch {
+    fileExists = false;
+  }
+
+  if (!fileExists) {
+    send404(response);
+    return;
+  }
+
+  // ── Delegate to serve-handler ──────────────────────────────────────────────
+  // Security headers are injected via serve-handler's `headers` option so they
+  // are merged correctly with the Content-Type it sets.
+  // The `rewrites` rule fixes a serve-handler 6.x bug where '/' returns 404
+  // instead of serving the directory index.
   handler(request, response, {
     public:           publicDir,
     directoryListing: false,
     cleanUrls:        false,
-    // Deliberately no 'headers' here — we've already set them above.
+    rewrites:         [{ source: '/', destination: '/index.html' }],
+    headers:          SERVE_HEADERS,
   }).catch(error => {
     console.error('[error] Static response failed:', error.message);
     if (!response.headersSent) {
-      applySecurityHeaders(response, urlPath);
+      addSecurityHeaders(response);
       response.writeHead(500, { 'Content-Type': 'text/plain' });
     }
     response.end('500 Internal Server Error');
@@ -182,8 +195,9 @@ const server = http.createServer((request, response) => {
 // ── Startup ───────────────────────────────────────────────────────────────────
 server.listen(port, '0.0.0.0', () => {
   console.log(`[portfolio] Listening on port ${port}`);
-  console.log(`[portfolio] Serving from: ${publicDir}`);
-  console.log(`[portfolio] Rate limit: ${RATE_LIMIT_MAX} req / ${RATE_LIMIT_WINDOW / 1000}s per IP`);
+  console.log(`[portfolio] Serving from:  ${publicDir}`);
+  console.log(`[portfolio] Rate limit:    ${RATE_LIMIT_MAX} req / ${RATE_LIMIT_WINDOW / 1000}s per IP`);
+  console.log(`[portfolio] CSP:           enabled`);
 });
 
 // ── Graceful shutdown ─────────────────────────────────────────────────────────

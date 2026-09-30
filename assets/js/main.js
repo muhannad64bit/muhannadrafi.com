@@ -57,7 +57,7 @@ function setupNavigation() {
         setOpen(false);
     });
     document.addEventListener("keydown", (event) => {
-        if (event.key === "Escape" && open) { setOpen(false); toggle.focus(); }
+        if (event.key === "Escape" && open) { setOpen(false); toggle?.focus(); }
     });
     document.addEventListener("click", (event) => {
         if (open && !nav.contains(event.target)) setOpen(false);
@@ -125,9 +125,11 @@ function openDialog(dialog, trigger) {
     dialog.setAttribute("aria-hidden", "false");
     document.body.classList.add("dialog-open");
     const panel = dialog.querySelector('[role="dialog"]');
-    panel.tabIndex = -1;
-    panel.scrollTop = 0;
-    (getFocusableElements(dialog)[0] || panel).focus();
+    if (panel) {
+        panel.tabIndex = -1;
+        panel.scrollTop = 0;
+    }
+    (getFocusableElements(dialog)[0] || panel)?.focus();
     state.background = Array.from(document.body.children)
         .filter((node) => node !== dialog && !node.inert);
     state.background.forEach((node) => { node.inert = true; });
@@ -142,7 +144,17 @@ function closeDialog(dialog) {
     state.lastTrigger?.focus({ preventScroll: true });
     dialog.classList.remove("is-active", "is-mounted");
     dialog.setAttribute("aria-hidden", "true");
+    // Clear media so blob/object URLs are released and stale previews don't flash.
     dialog.querySelector(".dialog__media")?.replaceChildren();
+    // Reset skills wrap so it doesn't remain hidden/stale on the next open.
+    const skillsWrap = dialog.querySelector("#dialogSkillsWrap");
+    if (skillsWrap) {
+        skillsWrap.hidden = false;
+        skillsWrap.querySelector("#dialogSkills")?.replaceChildren();
+    }
+    // Remove the programmatic tabIndex so the panel is no longer in the tab order.
+    const panel = dialog.querySelector('[role="dialog"]');
+    if (panel) panel.removeAttribute("tabindex");
 }
 
 function buildDialogMedia(mediaContainer, data) {
@@ -281,7 +293,7 @@ function setupFooter() {
         const now = new Date();
         const year = byId("currentYear");
         const time = byId("currentTime");
-        if (year) year.textContent = formatter.formatToParts(now).find((part) => part.type === "year").value;
+        if (year) year.textContent = formatter.formatToParts(now).find((part) => part.type === "year")?.value ?? String(now.getFullYear());
         if (time) time.textContent = `${formatter.format(now)} (Jeddah)`;
     };
     update();
@@ -289,8 +301,63 @@ function setupFooter() {
     document.addEventListener("visibilitychange", () => { if (!document.hidden) update(); });
 }
 
+/* ── Scroll-reveal + skill-bar animation ─────────────────── */
+function setupReveal() {
+    if (!("IntersectionObserver" in window)) {
+        // Fallback: make everything visible immediately
+        document.querySelectorAll(".reveal").forEach((el) => el.classList.add("is-visible"));
+        animateAllSkillBars();
+        return;
+    }
+
+    const revealObserver = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+            if (!entry.isIntersecting) return;
+            entry.target.classList.add("is-visible");
+            revealObserver.unobserve(entry.target);
+        });
+    }, { threshold: 0.1, rootMargin: "0px 0px -48px 0px" });
+
+    document.querySelectorAll(".reveal").forEach((el) => revealObserver.observe(el));
+
+    // Animate skill bars when the skills section comes into view
+    const skillsSection = document.getElementById("skills");
+    if (skillsSection) {
+        const barObserver = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                if (!entry.isIntersecting) return;
+                animateSkillBars(skillsSection);
+                barObserver.unobserve(entry.target);
+            });
+        }, { threshold: 0.25 });
+        barObserver.observe(skillsSection);
+    }
+}
+
+function animateSkillBars(container) {
+    if (motion.matches) {
+        // No animation — set widths instantly
+        container.querySelectorAll(".skills-bars__fill[data-percent]").forEach((fill) => {
+            fill.style.width = `${fill.dataset.percent}%`;
+        });
+        return;
+    }
+    container.querySelectorAll(".skills-bars__fill[data-percent]").forEach((fill, i) => {
+        setTimeout(() => {
+            fill.style.width = `${fill.dataset.percent}%`;
+        }, i * 80);
+    });
+}
+
+function animateAllSkillBars() {
+    document.querySelectorAll(".skills-bars__fill[data-percent]").forEach((fill) => {
+        fill.style.width = `${fill.dataset.percent}%`;
+    });
+}
+
 setupTheme();
 setupNavigation();
 setupDialogs();
 setupFooter();
+setupReveal();
 })();

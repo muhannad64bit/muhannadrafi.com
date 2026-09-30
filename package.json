@@ -4,10 +4,19 @@
   "private": true,
   "description": "Static portfolio with browser regression tests",
   "scripts": {
-    "check": "node --check assets/js/main.js",
-    "test": "npm run check && playwright test"
+    "check": "node --check assets/js/main.js && node --check server.cjs && node --check scripts/build.cjs",
+    "test": "npm run check && playwright test",
+    "build": "node scripts/build.cjs",
+    "start": "node server.cjs"
   },
   "devDependencies": {
     "@playwright/test": "^1.58.0"
-  }
+  },
+  "dependencies": {
+    "serve-handler": "6.1.7"
+  },
+  "engines": {
+    "node": "24.x"
+  },
+  "packageManager": "npm@11.19.1"
 }

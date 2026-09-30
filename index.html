@@ -23,16 +23,8 @@
     <link rel="alternate" hreflang="en" href="https://muhannadrafi.com/">
     <link rel="alternate" hreflang="ar" href="https://muhannadrafi.com/">
     <link rel="alternate" hreflang="x-default" href="https://muhannadrafi.com/">
-    <script>
-        (function () {
-            try {
-                var savedTheme = localStorage.getItem('theme');
-                if (savedTheme === 'dark') {
-                    document.documentElement.dataset.theme = 'dark';
-                }
-            } catch (error) {}
-        }());
-    </script>
+    <!-- Sync theme before paint — no defer/async to prevent FOUC -->
+    <script src="assets/js/theme-init.js"></script>
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -413,23 +405,33 @@
                             <div class="skills-bars" aria-label="Core competencies">
                                 <div class="skills-bars__row">
                                     <span class="skills-bars__name">Public Policy</span>
-                                    
+                                    <div class="skills-bars__track" role="progressbar" aria-valuenow="88" aria-valuemin="0" aria-valuemax="100" aria-label="Public Policy proficiency">
+                                        <div class="skills-bars__fill" data-percent="88"></div>
+                                    </div>
                                 </div>
                                 <div class="skills-bars__row">
                                     <span class="skills-bars__name">International Relations</span>
-                                    
+                                    <div class="skills-bars__track" role="progressbar" aria-valuenow="85" aria-valuemin="0" aria-valuemax="100" aria-label="International Relations proficiency">
+                                        <div class="skills-bars__fill" data-percent="85"></div>
+                                    </div>
                                 </div>
                                 <div class="skills-bars__row">
                                     <span class="skills-bars__name">Political Risk</span>
-                                    
+                                    <div class="skills-bars__track" role="progressbar" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100" aria-label="Political Risk proficiency">
+                                        <div class="skills-bars__fill" data-percent="80"></div>
+                                    </div>
                                 </div>
                                 <div class="skills-bars__row">
                                     <span class="skills-bars__name">Economic Policy</span>
-                                    
+                                    <div class="skills-bars__track" role="progressbar" aria-valuenow="82" aria-valuemin="0" aria-valuemax="100" aria-label="Economic Policy proficiency">
+                                        <div class="skills-bars__fill" data-percent="82"></div>
+                                    </div>
                                 </div>
                                 <div class="skills-bars__row">
                                     <span class="skills-bars__name">Research Methods</span>
-                                    
+                                    <div class="skills-bars__track" role="progressbar" aria-valuenow="87" aria-valuemin="0" aria-valuemax="100" aria-label="Research Methods proficiency">
+                                        <div class="skills-bars__fill" data-percent="87"></div>
+                                    </div>
                                 </div>
                             </div>
                         </section>

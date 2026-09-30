@@ -303,6 +303,11 @@ function setupFooter() {
 
 /* ── Scroll-reveal + skill-bar animation ─────────────────── */
 function setupReveal() {
+    if (motion.matches) {
+        animateAllSkillBars();
+        return;
+    }
+
     if (!("IntersectionObserver" in window)) {
         // Fallback: make everything visible immediately
         document.querySelectorAll(".reveal").forEach((el) => el.classList.add("is-visible"));
@@ -313,12 +318,16 @@ function setupReveal() {
     const revealObserver = new IntersectionObserver((entries) => {
         entries.forEach((entry) => {
             if (!entry.isIntersecting) return;
+            entry.target.classList.remove("reveal-pending");
             entry.target.classList.add("is-visible");
             revealObserver.unobserve(entry.target);
         });
     }, { threshold: 0.1, rootMargin: "0px 0px -48px 0px" });
 
-    document.querySelectorAll(".reveal").forEach((el) => revealObserver.observe(el));
+    document.querySelectorAll(".reveal").forEach((el) => {
+        el.classList.add("reveal-pending");
+        revealObserver.observe(el);
+    });
 
     // Animate skill bars when the skills section comes into view
     const skillsSection = document.getElementById("skills");

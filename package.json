@@ -1,13 +1,37 @@
 {
   "name": "muhannadrafi-portfolio",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "private": true,
-  "description": "Static portfolio with browser regression tests",
+  "description": "Professional portfolio website for Muhannad Rafi H. Alqarni - Political Economy Specialist",
+  "author": "Muhannad Rafi H. Alqarni",
+  "license": "MIT",
+  "homepage": "https://muhannadrafi.com/",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/muhannadrafi/portfolio.git"
+  },
+  "keywords": [
+    "portfolio",
+    "political-economy",
+    "research",
+    "policy-analysis",
+    "international-relations"
+  ],
   "scripts": {
-    "check": "node --check assets/js/main.js && node --check server.cjs && node --check scripts/build.cjs",
+    "check": "node --check assets/js/main.js && node --check assets/js/theme-init.js && node --check server.cjs && node --check scripts/build.cjs",
     "test": "npm run check && playwright test",
+    "test:ui": "playwright test --ui",
+    "test:headed": "playwright test --headed",
+    "test:debug": "playwright test --debug",
     "build": "node scripts/build.cjs",
-    "start": "node server.cjs"
+    "build:production": "NODE_ENV=production node scripts/build.cjs",
+    "start": "node server.cjs",
+    "start:dev": "NODE_ENV=development node server.cjs",
+    "dev": "npm run start:dev",
+    "serve": "npm run start",
+    "lint": "npm run check",
+    "clean": "rm -rf dist",
+    "rebuild": "npm run clean && npm run build"
   },
   "devDependencies": {
     "@playwright/test": "^1.58.0"
@@ -16,7 +40,13 @@
     "serve-handler": "6.1.7"
   },
   "engines": {
-    "node": "24.x"
+    "node": ">=20.0.0",
+    "npm": ">=10.0.0"
   },
-  "packageManager": "npm@11.19.1"
+  "packageManager": "npm@11.19.1",
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not op_mini all"
+  ]
 }

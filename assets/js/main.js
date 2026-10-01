@@ -129,10 +129,10 @@ function openDialog(dialog, trigger) {
         panel.tabIndex = -1;
         panel.scrollTop = 0;
     }
-    (getFocusableElements(dialog)[0] || panel)?.focus();
     state.background = Array.from(document.body.children)
         .filter((node) => node !== dialog && !node.inert);
     state.background.forEach((node) => { node.inert = true; });
+    (getFocusableElements(dialog)[0] || panel)?.focus();
 }
 
 function closeDialog(dialog) {

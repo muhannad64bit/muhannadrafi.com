@@ -40,16 +40,7 @@ test('dialogs isolate background, trap focus, restore trigger and reopen reliabl
   const dialog = page.locator('#contentDialog');
   await trigger.click();
   await expect(dialog).toHaveAttribute('aria-hidden', 'false');
-  const active = await page.evaluate(() => ({
-    activeElement: document.activeElement ? document.activeElement.outerHTML : null,
-    dialogClose: document.getElementById('dialogClose') ? {
-      rects: document.getElementById('dialogClose').getClientRects().length,
-      rect: document.getElementById('dialogClose').getBoundingClientRect(),
-      inert: document.getElementById('dialogClose').closest('[inert]') ? true : false,
-      hidden: document.getElementById('dialogClose').closest('[hidden]') ? true : false,
-    } : null
-  }));
-  console.log('ACTIVE ELEMENT INFO:', JSON.stringify(active, null, 2));
+  await expect(page.locator('main')).toHaveJSProperty('inert', true);
   await expect(page.locator('#dialogClose')).toBeFocused();
   await page.keyboard.press('Shift+Tab');
   expect(await page.evaluate(() => document.activeElement.closest('#contentDialog') !== null)).toBe(true);

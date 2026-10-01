@@ -1,18 +1,42 @@
 <!DOCTYPE html>
-<html lang="ar">
+<html lang="ar" dir="rtl">
     <head>
-        <title>الصفحة الإفتراضية</title>
-        <link rel="icon" type="image/x-icon" href="https://hpanel.hostinger.com/favicons/hostinger.png">
+        <title>Muhannad Rafi H. Alqarni | متخصص في الاقتصاد السياسي</title>
         <meta charset="utf-8">
-        <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
-        <meta content="الصفحة الإفتراضية" name="description">
         <meta content="width=device-width, initial-scale=1" name="viewport">
+        <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
+        <meta content="Muhannad Rafi H. Alqarni - متخصص في الاقتصاد السياسي وموضوعات العلاقات الدولية، البحث العلمي، والتحليل الاستراتيجي" name="description">
+        <meta content="Muhannad Rafi, الاقتصاد السياسي, العلاقات الدولية, البحث العلمي, التحليل الاستراتيجي, جدة, السعودية" name="keywords">
+        
+        <!-- Open Graph / Social Media -->
+        <meta property="og:title" content="Muhannad Rafi H. Alqarni | متخصص في الاقتصاد السياسي">
+        <meta property="og:description" content="متخصص في الاقتصاد السياسي وموضوعات العلاقات الدولية، البحث العلمي، والتحليل الاستراتيجي">
+        <meta property="og:type" content="website">
+        <meta property="og:url" content="https://muhannadrafi.com/">
+        <meta property="og:image" content="https://muhannadrafi.com/assets/images/ProFile.jpg">
+        
+        <!-- Security -->
+        <meta name="referrer" content="strict-origin-when-cross-origin">
+        <meta name="robots" content="noindex, nofollow">
+        
+        <!-- Favicon -->
+        <link rel="icon" type="image/png" href="/assets/images/icone.png">
+        <link rel="apple-touch-icon" href="/assets/images/icone.png">
+        
+        <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.googleapis.com">
-        <link href="https://fonts.googleapis.com/css2?family=DM+Sans&display=swap" rel="stylesheet">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;700&display=swap" rel="stylesheet">
         <style>
+            /* Reset and Base Styles */
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
+            
             body {
-                margin: 0px;
+                margin: 0;
                 display: flex;
                 flex-direction: column;
                 align-items: center;
@@ -21,33 +45,48 @@
                 height: 100vh;
                 min-height: 675px;
                 background-color: #F4F5FF;
-            }
-            p {
-                width: 100%;
-                left: 0px;
-                font-size: 16px;
                 font-family: 'DM Sans', sans-serif;
-                font-weight: 400;
-                letter-spacing: 0px;
-                text-align: center;
-                vertical-align: top;
-                max-width: 550px;
-                color: #727586;
-                margin: 0px;
+                color: #333;
+                line-height: 1.6;
             }
-            a:hover {
-                cursor: pointer;
-                color: #673DE6;
-                text-decoration: underline;
-            }
+            
+            /* Typography */
             h1 {
                 font-family: 'DM Sans', sans-serif;
                 font-size: 24px;
                 font-weight: 700;
-                letter-spacing: 0px;
+                letter-spacing: 0;
                 text-align: center;
-                margin: 8px;
+                margin: 8px 0;
+                color: #1a1a1a;
             }
+            
+            p {
+                width: 100%;
+                max-width: 550px;
+                font-size: 16px;
+                font-family: 'DM Sans', sans-serif;
+                font-weight: 400;
+                letter-spacing: 0;
+                text-align: center;
+                color: #727586;
+                margin: 0 auto 16px;
+            }
+            
+            /* Links */
+            a {
+                text-decoration: none;
+                color: #673DE6;
+                transition: color 0.2s ease;
+            }
+            
+            a:hover {
+                color: #572cc4;
+                text-decoration: underline;
+                cursor: pointer;
+            }
+            
+            /* Content Layout */
             .content {
                 display: flex;
                 flex-direction: column;
@@ -55,35 +94,10 @@
                 justify-content: center;
                 width: 100%;
                 height: 100%;
+                padding: 20px;
             }
-            .ic-launch  {
-                margin-left: 10.5px;
-                width: 21px !important;
-                height: 20px !important;
-            }
-            .link-container {
-                margin-top: 32px;
-                margin-bottom: 32px;
-            }
-            .link {
-                display: flex;
-                flex-direction: row;
-                align-items: center;
-                justify-content: center;
-                font-family: 'DM Sans', sans-serif;
-                font-style: normal;
-                font-weight: 700;
-                font-size: 14px;
-                color: #673DE6;
-                margin-top: 8px;
-                text-decoration: none;
-            }
-            .main-image {
-                width: 100%;
-                max-width: 650px;
-                max-height: 406px;
-                height: auto;
-            }
+            
+            /* Navigation */
             .navigation {
                 width: 100%;
                 height: 72px;
@@ -94,20 +108,80 @@
                 align-items: center;
                 justify-content: center;
                 background-color: #36344D;
+                position: fixed;
+                top: 0;
+                left: 0;
+                z-index: 1000;
             }
-            @media screen and (max-width: 580px) and (min-width: 0px) {
+            
+            /* Images */
+            .main-image {
+                width: 100%;
+                max-width: 650px;
+                max-height: 406px;
+                height: auto;
+                margin-bottom: 24px;
+            }
+            
+            /* Link Container and Links */
+            .link-container {
+                margin: 32px 0;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                gap: 12px;
+            }
+            
+            .link {
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                justify-content: center;
+                font-family: 'DM Sans', sans-serif;
+                font-style: normal;
+                font-weight: 700;
+                font-size: 14px;
+                color: #673DE6;
+                gap: 8px;
+            }
+            
+            .ic-launch {
+                margin-left: 10.5px;
+                width: 21px !important;
+                height: 20px !important;
+            }
+            
+            /* Responsive Design */
+            @media screen and (max-width: 580px) {
                 h1, p, .link-container {
                     width: 80%;
                 }
             }
-            @media screen and (min-width: 650px) and (min-height: 0px) and (max-height: 750px) {
+            
+            @media screen and (min-width: 650px) and (max-height: 750px) {
                 .link-container {
                     margin-top: 12px;
                 }
                 h1 {
-                    margin-top: 0px;
-                    margin-bottom: 0px;
+                    margin-top: 0;
+                    margin-bottom: 0;
                 }
+            }
+            
+            /* Accessibility */
+            .skip-link {
+                position: absolute;
+                top: -40px;
+                left: 0;
+                background: #673DE6;
+                color: white;
+                padding: 8px 16px;
+                z-index: 1001;
+                text-decoration: none;
+            }
+            
+            .skip-link:focus {
+                top: 0;
             }
         </style>
     </head>

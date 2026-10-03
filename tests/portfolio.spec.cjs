@@ -4,16 +4,16 @@ test.beforeEach(async ({ page }) => {
   await page.route('https://**/*', route => route.abort());
 });
 
-test('navigation retains fragment history and handles malformed fragments', async ({ page }) => {
+test('navigation smoothly scrolls without changing URL or pushing history', async ({ page }) => {
   const errors = [];
   page.on('pageerror', error => errors.push(error.message));
   await page.goto('/#%invalid');
   await page.locator('.site-nav__link[href="#education"]').click();
-  await expect(page).toHaveURL(/#education$/);
+  await expect(page).toHaveURL(/^http:\/\/127\.0\.0\.1:4173\/?$/);
   await expect(page.locator('#education')).toBeFocused();
   await page.locator('.site-nav__link[href="#skills"]').click();
-  await page.goBack();
-  await expect(page).toHaveURL(/#education$/);
+  await expect(page).toHaveURL(/^http:\/\/127\.0\.0\.1:4173\/?$/);
+  await expect(page.locator('#skills')).toBeFocused();
   expect(errors).toEqual([]);
 });
 
@@ -105,7 +105,7 @@ test('short mobile menus scroll and section headings clear the sticky header', a
   const menu = page.locator('#siteNavMenu');
   expect(await menu.evaluate(node => node.scrollHeight > node.clientHeight)).toBe(true);
   await page.locator('.site-nav__link[href="#contact"]').click();
-  await expect(page).toHaveURL(/#contact$/);
+  await expect(page).toHaveURL(/^http:\/\/127\.0\.0\.1:4173\/?$/);
   await expect.poll(() => page.evaluate(() => {
     const heading = document.querySelector('#contact .section-heading').getBoundingClientRect();
     return heading.top >= document.querySelector('.site-header').getBoundingClientRect().bottom;

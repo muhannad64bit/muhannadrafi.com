@@ -168,11 +168,27 @@ function setupNavigation() {
         }
     });
 
+    // Strip any initial hash on page load to keep URL clean
+    if (window.location.hash) {
+        try {
+            history.replaceState(null, "", window.location.pathname + window.location.search);
+        } catch (_) {}
+    }
+
+    // Strip hash if external events trigger hashchange
+    window.addEventListener("hashchange", () => {
+        if (window.location.hash) {
+            try {
+                history.replaceState(null, "", window.location.pathname + window.location.search);
+            } catch (_) {}
+        }
+    });
+
     // Handle navigation link clicks and outside clicks
     document.addEventListener("click", (event) => {
         if (open && !nav.contains(event.target)) setOpen(false);
         
-        // Handle hash navigation
+        // Handle in-page hash links (e.g. href="#about", href="#education", etc.)
         const link = event.target.closest('a[href^="#"]');
         if (!link || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
         
@@ -181,15 +197,37 @@ function setupNavigation() {
             id = decodeURIComponent(link.hash.slice(1)); 
         } catch {
             console.warn("[Navigation] Invalid fragment URI");
+            event.preventDefault();
             return; 
         }
         
         const target = byId(id);
         if (!target) return;
         
+        // Prevent default browser URL modification / hash change
+        event.preventDefault();
+        
         setOpen(false);
         
-        // Keep native fragment URLs and browser history; transfer keyboard focus.
+        // Calculate offset position accounting for sticky header
+        const headerOffset = (header?.getBoundingClientRect().height || 0) + 16;
+        const targetTop = target.getBoundingClientRect().top + window.scrollY;
+        const offsetPosition = Math.max(0, targetTop - headerOffset);
+        
+        // Smoothly scroll programmatically without touching browser URL or history
+        window.scrollTo({
+            top: offsetPosition,
+            behavior: motion.matches ? "instant" : "smooth"
+        });
+        
+        // Ensure URL stays strictly without hash
+        if (window.location.hash) {
+            try {
+                history.replaceState(null, "", window.location.pathname + window.location.search);
+            } catch (_) {}
+        }
+        
+        // Keep keyboard navigation and accessibility working properly
         if (!target.hasAttribute("tabindex")) {
             target.tabIndex = -1;
             target.addEventListener("blur", () => target.removeAttribute("tabindex"), { once: true });

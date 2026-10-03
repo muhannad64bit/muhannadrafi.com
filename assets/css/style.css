@@ -180,7 +180,10 @@ h1, h2, h3, p { margin: 0; }
 main, .site-footer { margin-left: 0; }
 
 /* ─── Sections ────────────────────────────────────────────────────────────── */
-.section { padding: 72px 0; }
+.section {
+    padding: 72px 0;
+    scroll-margin-top: calc(var(--header-offset, 80px) + 8px);
+}
 .section + .section { padding-top: 0; }
 .section + .section > .container {
     border-top: 1px solid var(--border);
@@ -620,7 +623,7 @@ main, .site-footer { margin-left: 0; }
     background: var(--surface); border: 1px solid var(--border);
     font-size: 18px; line-height: 1; color: var(--text-2);
     display: grid; place-items: center; box-shadow: var(--shadow-sm);
-    transition: all .15s ease;
+    transition: background-color .15s ease, color .15s ease, border-color .15s ease, transform .15s ease;
 }
 .dialog__close:hover {
     background: var(--surface-hover); color: var(--text);

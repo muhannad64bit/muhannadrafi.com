@@ -43,9 +43,9 @@ module.exports = defineConfig({
   
   // Reporting
   reporter: [
-    ['list'], // Simple list reporter
-    ['html', { outputFolder: 'test-results/html' }], // HTML report
-    ['json', { outputFolder: 'test-results/json' }] // JSON report
+    ['list'],
+    ['html', { outputFolder: 'test-results-html', open: 'never' }],
+    ['json', { outputFolder: 'test-results-json' }]
   ],
   
   // Artifacts directory
